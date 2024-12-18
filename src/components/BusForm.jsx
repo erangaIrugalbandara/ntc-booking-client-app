@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { addBus } from '../api/buses';
 import { getRoutes } from '../api/routes';
+import { getLayouts } from '../api/layouts'; 
 
 const BusForm = ({ token }) => {
   const [registrationNumber, setRegistrationNumber] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
+  const [layout, setLayout] = useState(''); 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [routes, setRoutes] = useState([]);
+  const [layouts, setLayouts] = useState([]); 
 
   useEffect(() => {
     const fetchRoutes = async () => {
@@ -22,16 +25,27 @@ const BusForm = ({ token }) => {
       }
     };
 
+    const fetchLayouts = async () => {
+      try {
+        const data = await getLayouts(token);
+        setLayouts(data);
+      } catch (error) {
+        console.error('Failed to fetch layouts', error);
+      }
+    };
+
     fetchRoutes();
+    fetchLayouts();
   }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addBus({ registrationNumber, from, to, firstName, lastName, email, password }, token);
+      await addBus({ registrationNumber, from, to, layout, firstName, lastName, email, password }, token);
       setRegistrationNumber('');
       setFrom('');
       setTo('');
+      setLayout(''); // Reset layout
       setFirstName('');
       setLastName('');
       setEmail('');
@@ -58,6 +72,17 @@ const BusForm = ({ token }) => {
           {routes.map((route) => (
             <option key={`${route.from}-${route.to}`} value={`${route.from}-${route.to}`}>
               {route.from} to {route.to}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label>Layout:</label>
+        <select value={layout} onChange={(e) => setLayout(e.target.value)} required>
+          <option value="">Select Layout</option>
+          {layouts.map((layout) => (
+            <option key={layout._id} value={layout._id}>
+              {layout.layoutName}
             </option>
           ))}
         </select>
