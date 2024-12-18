@@ -1,0 +1,31 @@
+.layout {
+    text-align: center;
+  }
+  
+  .bus-layout {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .left-side, .right-side {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .seat-row {
+    display: flex;
+  }
+  
+  .seat {
+    margin: 5px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .back-seat {
+    display: flex;
+    justify-content: center;
+  }
