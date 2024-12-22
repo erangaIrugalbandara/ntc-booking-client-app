@@ -7,6 +7,7 @@ import RoutesPage from './pages/RoutesPage';
 import BusesPage from './pages/BusesPage';
 import SchedulesPage from './pages/SchedulesPage';
 import LayoutGeneratorPage from './pages/LayoutGeneratorPage';
+import CommuterRegistrationPage from './pages/CommuterRegistrationPage'; 
 import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/buses" element={<ProtectedRoute element={<BusesPage />} token={token} />} />
         <Route path="/schedules" element={<ProtectedRoute element={<SchedulesPage />} token={token} />} />
         <Route path="/layout-generator" element={<ProtectedRoute element={<LayoutGeneratorPage layouts={layouts} setLayouts={setLayouts} selectedLayout={selectedLayout} setSelectedLayout={setSelectedLayout} />} token={token} />} />
+        <Route path="/register-commuter" element={<CommuterRegistrationPage />} /> 
       </Routes>
     </Router>
   );
