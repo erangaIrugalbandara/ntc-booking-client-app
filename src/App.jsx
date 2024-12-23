@@ -7,16 +7,20 @@ import RoutesPage from './pages/RoutesPage';
 import BusesPage from './pages/BusesPage';
 import SchedulesPage from './pages/SchedulesPage';
 import LayoutGeneratorPage from './pages/LayoutGeneratorPage';
-import CommuterRegistrationPage from './pages/CommuterRegistrationPage'; 
+import CommuterRegistrationPage from './pages/CommuterRegistrationPage';
+import UserProfilePage from './pages/UserProfilePage';
+import SeatBookingPage from './pages/SeatBookingPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
   const [token, setToken] = useState('');
+  const [userRole, setUserRole] = useState('');
   const [layouts, setLayouts] = useState([]);
   const [selectedLayout, setSelectedLayout] = useState(null);
 
-  const handleLogin = (token) => {
+  const handleLogin = (token, role) => {
     setToken(token);
+    setUserRole(role);
   };
 
   useEffect(() => {
@@ -44,7 +48,7 @@ const App = () => {
 
   return (
     <Router>
-      <Header />
+      <Header userRole={userRole} />
       <Routes>
         <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/dashboard" element={<ProtectedRoute element={<DashboardPage />} token={token} />} />
@@ -52,7 +56,9 @@ const App = () => {
         <Route path="/buses" element={<ProtectedRoute element={<BusesPage />} token={token} />} />
         <Route path="/schedules" element={<ProtectedRoute element={<SchedulesPage />} token={token} />} />
         <Route path="/layout-generator" element={<ProtectedRoute element={<LayoutGeneratorPage layouts={layouts} setLayouts={setLayouts} selectedLayout={selectedLayout} setSelectedLayout={setSelectedLayout} />} token={token} />} />
-        <Route path="/register-commuter" element={<CommuterRegistrationPage />} /> 
+        <Route path="/register-commuter" element={<CommuterRegistrationPage />} />
+        <Route path="/profile" element={<ProtectedRoute element={<UserProfilePage />} token={token} />} />
+        <Route path="/seat-booking" element={<ProtectedRoute element={<SeatBookingPage token={token} />} token={token} />} />
       </Routes>
     </Router>
   );

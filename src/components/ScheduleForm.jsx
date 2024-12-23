@@ -4,7 +4,7 @@ import { getBuses } from '../api/buses';
 
 const ScheduleForm = ({ token }) => {
   const [busId, setBusId] = useState('');
-  const [schedules, setSchedules] = useState([{ departureTime: '', arrivalTime: '', direction: true }]);
+  const [schedules, setSchedules] = useState([{ date: '', departureTime: '', arrivalTime: '', direction: true }]);
   const [buses, setBuses] = useState([]);
 
   useEffect(() => {
@@ -27,14 +27,14 @@ const ScheduleForm = ({ token }) => {
   };
 
   const handleAddSchedule = () => {
-    setSchedules([...schedules, { departureTime: '', arrivalTime: '', direction: true }]);
+    setSchedules([...schedules, { date: '', departureTime: '', arrivalTime: '', direction: true }]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await addSchedule(busId, schedules, token);
-      setSchedules([{ departureTime: '', arrivalTime: '', direction: true }]);
+      setSchedules([{ date: '', departureTime: '', arrivalTime: '', direction: true }]);
     } catch (error) {
       console.error('Failed to add schedules', error);
     }
@@ -56,16 +56,38 @@ const ScheduleForm = ({ token }) => {
       {schedules.map((schedule, index) => (
         <div key={index}>
           <div>
+            <label>Date:</label>
+            <input
+              type="date"
+              value={schedule.date}
+              onChange={(e) => handleScheduleChange(index, 'date', e.target.value)}
+              required
+            />
+          </div>
+          <div>
             <label>Departure Time:</label>
-            <input type="text" value={schedule.departureTime} onChange={(e) => handleScheduleChange(index, 'departureTime', e.target.value)} required />
+            <input
+              type="time"
+              value={schedule.departureTime}
+              onChange={(e) => handleScheduleChange(index, 'departureTime', e.target.value)}
+              required
+            />
           </div>
           <div>
             <label>Arrival Time:</label>
-            <input type="text" value={schedule.arrivalTime} onChange={(e) => handleScheduleChange(index, 'arrivalTime', e.target.value)} required />
+            <input
+              type="time"
+              value={schedule.arrivalTime}
+              onChange={(e) => handleScheduleChange(index, 'arrivalTime', e.target.value)}
+              required
+            />
           </div>
           <div>
             <label>Direction:</label>
-            <select value={schedule.direction} onChange={(e) => handleScheduleChange(index, 'direction', e.target.value === 'true')}>
+            <select
+              value={schedule.direction}
+              onChange={(e) => handleScheduleChange(index, 'direction', e.target.value === 'true')}
+            >
               <option value="true">A to B</option>
               <option value="false">B to A</option>
             </select>
