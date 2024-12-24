@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import BusCard from '../components/BusCard';
 
 const SeatBookingPage = ({ token }) => {
   const [fromCities, setFromCities] = useState([]);
@@ -6,6 +7,8 @@ const SeatBookingPage = ({ token }) => {
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
   const [date, setDate] = useState('');
+  const [error, setError] = useState('');
+  const [buses, setBuses] = useState([]);
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -26,10 +29,28 @@ const SeatBookingPage = ({ token }) => {
     fetchCities();
   }, [token]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle search logic here
-    console.log('Search:', { fromCity, toCity, date });
+    if (fromCity === toCity) {
+      setError('From and To cities cannot be the same.');
+      return;
+    }
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/buses/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ from: fromCity, to: toCity, date })
+      });
+      const data = await response.json();
+      setBuses(data);
+    } catch (error) {
+      console.error('Failed to fetch matching buses', error);
+    }
   };
 
   return (
@@ -64,8 +85,17 @@ const SeatBookingPage = ({ token }) => {
             required
           />
         </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Search</button>
       </form>
+      {buses.length > 0 && (
+        <div>
+          <h2>Available Buses</h2>
+          {buses.map((bus) => (
+            <BusCard key={bus._id} bus={bus} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
