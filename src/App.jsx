@@ -10,6 +10,7 @@ import LayoutGeneratorPage from './pages/LayoutGeneratorPage';
 import CommuterRegistrationPage from './pages/CommuterRegistrationPage';
 import UserProfilePage from './pages/UserProfilePage';
 import SeatBookingPage from './pages/SeatBookingPage';
+import CheckoutPage from './pages/CheckoutPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
@@ -59,6 +60,8 @@ const App = () => {
         <Route path="/register-commuter" element={<CommuterRegistrationPage />} />
         <Route path="/profile" element={<ProtectedRoute element={<UserProfilePage />} token={token} />} />
         <Route path="/seat-booking" element={<ProtectedRoute element={<SeatBookingPage token={token} />} token={token} />} />
+        <Route path="/checkout" element={<ProtectedRoute element={<CheckoutPage />} token={token} />} />
+        <Route path="/seat-booking" component={SeatBookingPage} />
       </Routes>
     </Router>
   );

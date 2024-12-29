@@ -1,35 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Booking from '../components/Booking';
 import './BusCard.css';
 
-const BusCard = ({ bus }) => {
-  const calculateDuration = (departureTime, arrivalTime) => {
-    const departure = new Date(`1970-01-01T${departureTime}:00`);
-    const arrival = new Date(`1970-01-01T${arrivalTime}:00`);
-    const duration = (arrival - departure) / (1000 * 60 * 60); // Convert milliseconds to hours
-    return duration;
+const BusCard = ({ bus, date, userId }) => {
+  const [showBooking, setShowBooking] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
+
+  const handleBookSeat = (schedule) => {
+    setSelectedSchedule(schedule);
+    setShowBooking(true);
   };
 
-  const departureCity = bus.direction ? bus.from : bus.to;
-  const arrivalCity = bus.direction ? bus.to : bus.from;
+  const filteredSchedules = bus.schedules.filter(schedule => schedule.date === date);
 
   return (
     <div className="bus-card">
       <h3>{bus.registrationNumber}</h3>
-      <p>Date: {bus.date}</p>
-      <div className="bus-details">
-        <div>
-          <p>Departure City: {departureCity}</p>
-          <p>Departure Time: {bus.departureTime}</p>
+      <p>From: {bus.from}</p>
+      <p>To: {bus.to}</p>
+      {filteredSchedules.map((schedule, index) => (
+        <div key={index} className="schedule">
+          <p>Date: {schedule.date}</p>
+          <p>Departure: {schedule.departureTime}</p>
+          <p>Arrival: {schedule.arrivalTime}</p>
+          <button onClick={() => handleBookSeat(schedule)}>Book Seat</button>
         </div>
-        <div>
-          <p>Arrival City: {arrivalCity}</p>
-          <p>Arrival Time: {bus.arrivalTime}</p>
-        </div>
-        <div>
-          <p>Duration: {calculateDuration(bus.departureTime, bus.arrivalTime)} hours</p>
-        </div>
-      </div>
-      <button>Book Seat</button>
+      ))}
+      {showBooking && selectedSchedule && (
+        <Booking bus={bus} schedule={selectedSchedule} userId={userId} />
+      )}
     </div>
   );
 };

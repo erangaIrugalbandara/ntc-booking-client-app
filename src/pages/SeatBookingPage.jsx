@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BusCard from '../components/BusCard';
 
-const SeatBookingPage = ({ token }) => {
+const SeatBookingPage = ({ token, userId }) => {
   const [fromCities, setFromCities] = useState([]);
   const [toCities, setToCities] = useState([]);
   const [fromCity, setFromCity] = useState('');
@@ -92,7 +92,7 @@ const SeatBookingPage = ({ token }) => {
         <div>
           <h2>Available Buses</h2>
           {buses.map((bus) => (
-            <BusCard key={bus._id} bus={bus} />
+            <BusCard key={bus._id} bus={bus} date={date} userId={userId} token={token} />
           ))}
         </div>
       )}
