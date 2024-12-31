@@ -16,18 +16,20 @@ import ProtectedRoute from './components/ProtectedRoute';
 const App = () => {
   const [token, setToken] = useState('');
   const [userRole, setUserRole] = useState('');
+  const [userId, setUserId] = useState('');
   const [layouts, setLayouts] = useState([]);
   const [selectedLayout, setSelectedLayout] = useState(null);
 
-  const handleLogin = (token, role) => {
+  const handleLogin = (token, userId, role) => {
     setToken(token);
+    setUserId(userId);
     setUserRole(role);
   };
 
   useEffect(() => {
     const fetchLayouts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/layouts', {
+        const response = await fetch('http://54.242.171.0/api/layouts', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -59,9 +61,8 @@ const App = () => {
         <Route path="/layout-generator" element={<ProtectedRoute element={<LayoutGeneratorPage layouts={layouts} setLayouts={setLayouts} selectedLayout={selectedLayout} setSelectedLayout={setSelectedLayout} />} token={token} />} />
         <Route path="/register-commuter" element={<CommuterRegistrationPage />} />
         <Route path="/profile" element={<ProtectedRoute element={<UserProfilePage />} token={token} />} />
-        <Route path="/seat-booking" element={<ProtectedRoute element={<SeatBookingPage token={token} />} token={token} />} />
+        <Route path="/seat-booking" element={<ProtectedRoute element={<SeatBookingPage token={token} userId={userId} />} token={token} />} />
         <Route path="/checkout" element={<ProtectedRoute element={<CheckoutPage />} token={token} />} />
-        <Route path="/seat-booking" component={SeatBookingPage} />
       </Routes>
     </Router>
   );

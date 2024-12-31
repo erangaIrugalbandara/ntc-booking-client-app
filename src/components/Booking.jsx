@@ -26,7 +26,7 @@ const Booking = ({ bus, schedule, userId }) => {
   const handleCheckout = async (paymentMethod) => {
     if (paymentMethod === 'payLater') {
       try {
-        const response = await axios.post('http://localhost:5000/api/bookings', {
+        const response = await axios.post('http://54.242.171.0/api/bookings', {
           busId: bus._id,
           scheduleDate: schedule.date,
           seats: selectedSeats,

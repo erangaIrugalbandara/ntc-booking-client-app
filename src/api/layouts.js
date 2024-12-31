@@ -1,5 +1,5 @@
 export const getLayouts = async (token) => {
-    const response = await fetch('http://localhost:5000/api/layouts', {
+    const response = await fetch('http://54.242.171.0/api/layouts', {
       headers: {
         'Authorization': `Bearer ${token}`
       }

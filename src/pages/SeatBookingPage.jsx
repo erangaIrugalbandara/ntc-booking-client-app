@@ -13,7 +13,7 @@ const SeatBookingPage = ({ token, userId }) => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/cities', {
+        const response = await fetch('http://54.242.171.0/api/cities', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -38,7 +38,7 @@ const SeatBookingPage = ({ token, userId }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/buses/search', {
+      const response = await fetch('http://54.242.171.0/api/buses/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

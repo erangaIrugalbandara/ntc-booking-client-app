@@ -9,7 +9,7 @@ const Generator = ({ setLayouts }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/layouts', {
+      const response = await fetch('http://54.242.171.0/api/layouts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ layoutName, rightSide, leftSide, backSeat })

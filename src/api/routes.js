@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/routes';
+const API_URL = 'http://54.242.171.0/api/routes';
 
 export const createRoute = async (routeData, token) => {
   const response = await axios.post(API_URL, routeData, {

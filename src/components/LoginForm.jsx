@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { login } from '../api/auth';
+import axios from 'axios';
 
 const LoginForm = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await login(email, password);
-      onLogin(data.token);
+      const response = await axios.post('http://54.242.171.0/api/auth/login', { email, password });
+      const { token, userId, role } = response.data;
+      onLogin(token, userId, role);
     } catch (error) {
-      console.error('Login failed', error);
+      setError('Invalid credentials');
     }
   };
 
@@ -25,6 +27,7 @@ const LoginForm = ({ onLogin }) => {
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <button type="submit">Login</button>
     </form>
   );
